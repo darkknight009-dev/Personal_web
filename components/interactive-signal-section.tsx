@@ -15,7 +15,7 @@ const PLAYLIST: Track[] = [
   {
     id: "01",
     title: "Soft chaos, good lyrics",
-    subtitle: "Hindi Â· English Â· Punjabi romance and pop",
+    subtitle: "Hindi · English · Punjabi romance and pop",
     genre: "LOFI / ROMANCE",
     bpm: 88,
     search: "Hindi English Punjabi romantic pop songs",
@@ -23,7 +23,7 @@ const PLAYLIST: Track[] = [
   {
     id: "02",
     title: "Kinni Kinni (Late Night Tape)",
-    subtitle: "Diljit Dosanjh Â· Chill Acoustic Beats",
+    subtitle: "Diljit Dosanjh · Chill Acoustic Beats",
     genre: "PUNJABI CHILL",
     bpm: 96,
     search: "Kinni Kinni Diljit Dosanjh",
@@ -31,7 +31,7 @@ const PLAYLIST: Track[] = [
   {
     id: "03",
     title: "Starboy & Midnight City",
-    subtitle: "The Weeknd Â· M83 Â· Synthwave Flow",
+    subtitle: "The Weeknd · M83 · Synthwave Flow",
     genre: "SYNTH POP",
     bpm: 118,
     search: "Starboy The Weeknd Midnight City M83",
@@ -69,10 +69,10 @@ export default function InteractiveSignalSection() {
   };
 
   const tools = [
-    { num: "01", name: "RAG agents", tag: "FAISS Â· Hybrid Search Â· Re-Ranking", status: "PRODUCTION" },
-    { num: "02", name: "AI workflows", tag: "LangChain Â· Multi-Agent Â· Vapi", status: "AUTONOMOUS" },
-    { num: "03", name: "APIs & backends", tag: "Next.js Â· Node Â· Docker Â· FastAPI", status: "HIGH SPEED" },
-    { num: "04", name: "Hackathon builds", tag: "15+ Builds Â· Microsoft Top Finishes", status: "SHIP VELOCITY" },
+    { num: "01", name: "RAG agents", tag: "FAISS · Hybrid Search · Re-Ranking", status: "PRODUCTION" },
+    { num: "02", name: "AI workflows", tag: "LangChain · Multi-Agent · Vapi", status: "AUTONOMOUS" },
+    { num: "03", name: "APIs & backends", tag: "Next.js · Node · Docker · FastAPI", status: "HIGH SPEED" },
+    { num: "04", name: "Hackathon builds", tag: "15+ Builds · Microsoft Top Finishes", status: "SHIP VELOCITY" },
   ];
 
   return (
@@ -171,7 +171,7 @@ export default function InteractiveSignalSection() {
 
             <div className="signal-title-row">
               <h2 style={{ letterSpacing: "-0.02em" }}>
-                Whatâ€™s
+                What's
                 <br />
                 <em>next?</em>
               </h2>
@@ -183,7 +183,7 @@ export default function InteractiveSignalSection() {
                   transition: "all 0.3s ease",
                 }}
               >
-                â†—
+                ↗
               </div>
             </div>
 
@@ -240,7 +240,7 @@ export default function InteractiveSignalSection() {
                 gap: "4px",
               }}
             >
-              SKIP â­
+              SKIP »
             </button>
           </div>
 
@@ -286,7 +286,7 @@ export default function InteractiveSignalSection() {
                 }}
               />
               <div className="record-center" style={{ fontWeight: 600 }}>
-                â–¶
+                ▶
               </div>
             </div>
 
@@ -459,7 +459,7 @@ export default function InteractiveSignalSection() {
                         animation: "fadeIn 0.2s ease",
                       }}
                     >
-                      â†’ {tool.tag}
+                      → {tool.tag}
                     </div>
                   )}
                 </div>
