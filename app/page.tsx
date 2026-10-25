@@ -2,9 +2,7 @@ import ScrollEffects from "../components/scroll-effects";
 import PortfolioAIController from "../components/portfolio-ai-controller";
 import AICallTriggerButton from "../components/ai-call-trigger-button";
 import ThreeUILoader from "../components/threeui-loader";
-import ThreeUIParticleField from "../components/threeui-particle-field";
 import InteractiveSignalSection from "../components/interactive-signal-section";
-import BrandOrbsViewer from "../components/brand-orbs-viewer";
 
 const projects = [
   {
@@ -241,8 +239,7 @@ export default function Home() {
       </header>
 
       <main id="top">
-        <section className="hero section-shell" aria-labelledby="hero-title" style={{ position: "relative" }}>
-          <ThreeUIParticleField opacity={0.4} />
+        <section className="hero section-shell" aria-labelledby="hero-title">
           <div className="hero-meta eyebrow-row reveal-up">
               <p>
               <span className="status-dot" /> Open to opportunities and collaborations
@@ -312,24 +309,19 @@ export default function Home() {
           </div>
         </section>
 
-        <div className="ticker" aria-label="What I do">
-          <div className="ticker-track">
-            <span>AI/ML</span>
-            <i>✳</i>
-            <span>hackathons</span>
-            <i>✳</i>
-            <span>new tools</span>
-            <i>✳</i>
-            <span>hiking trails</span>
-            <i>✳</i>
-            <span>AI/ML</span>
-            <i>✳</i>
-            <span>music</span>
-            <i>✳</i>
-            <span>real-world builds</span>
-            <i>✳</i>
-            <span>travel</span>
-            <i>✳</i>
+        <div className="interest-ribbon" aria-label="Things I am curious about">
+          <div className="interest-ribbon-heading">
+            <span className="interest-ribbon-kicker">CURRENT FREQUENCIES</span>
+            <span className="interest-ribbon-signal"><i /> Always exploring</span>
+          </div>
+          <div className="interest-ribbon-items">
+            <span>AI / ML</span>
+            <span>Hackathons</span>
+            <span>New tools</span>
+            <span>Trail time</span>
+            <span>Music</span>
+            <span>Real-world builds</span>
+            <span>Travel</span>
           </div>
         </div>
 
@@ -512,22 +504,6 @@ export default function Home() {
             <a className="contact-email" href="mailto:ishaanrai18@gmail.com">
               ishaanrai18@gmail.com <span>↗</span>
             </a>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", margin: "24px 0 16px" }}>
-              <span style={{ fontSize: "11px", fontFamily: "var(--mono)", color: "rgba(235, 231, 220, 0.55)", letterSpacing: "0.1em" }}>
-                NETWORK NODES:
-              </span>
-              <div style={{ display: "flex", gap: "10px" }}>
-                <a href="https://github.com/Ishaan-Rai09" target="_blank" rel="noreferrer" title="GitHub 3D Node">
-                  <BrandOrbsViewer variant="github" size="small" speed={1.2} />
-                </a>
-                <a href="https://www.linkedin.com/in/ishaan-rai/" target="_blank" rel="noreferrer" title="LinkedIn 3D Node">
-                  <BrandOrbsViewer variant="linkedin" size="small" speed={1} />
-                </a>
-                <a href="mailto:ishaanrai18@gmail.com" title="Email 3D Node">
-                  <BrandOrbsViewer variant="email" size="small" speed={1.1} />
-                </a>
-              </div>
-            </div>
             <div className="contact-links">
               <ArrowLink label="GitHub" href="https://github.com/Ishaan-Rai09" />
               <ArrowLink label="LinkedIn" href="https://www.linkedin.com/in/ishaan-rai/" />

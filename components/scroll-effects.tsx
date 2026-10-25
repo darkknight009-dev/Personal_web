@@ -165,11 +165,6 @@ export default function ScrollEffects() {
         });
       });
 
-      gsap.fromTo(
-        ".ticker-track",
-        { xPercent: 0 },
-        { xPercent: -22, duration: 26, repeat: -1, ease: "none" },
-      );
     });
 
     const refresh = window.setTimeout(() => ScrollTrigger.refresh(), 350);

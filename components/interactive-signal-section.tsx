@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import BrandOrbsViewer from "./brand-orbs-viewer";
+import React, { useState } from "react";
 
 interface Track {
   id: string;
@@ -9,6 +8,7 @@ interface Track {
   subtitle: string;
   genre: string;
   bpm: number;
+  search: string;
 }
 
 const PLAYLIST: Track[] = [
@@ -18,6 +18,7 @@ const PLAYLIST: Track[] = [
     subtitle: "Hindi · English · Punjabi romance and pop",
     genre: "LOFI / ROMANCE",
     bpm: 88,
+    search: "Hindi English Punjabi romantic pop songs",
   },
   {
     id: "02",
@@ -25,6 +26,7 @@ const PLAYLIST: Track[] = [
     subtitle: "Diljit Dosanjh · Chill Acoustic Beats",
     genre: "PUNJABI CHILL",
     bpm: 96,
+    search: "Kinni Kinni Diljit Dosanjh",
   },
   {
     id: "03",
@@ -32,18 +34,13 @@ const PLAYLIST: Track[] = [
     subtitle: "The Weeknd · M83 · Synthwave Flow",
     genre: "SYNTH POP",
     bpm: 118,
+    search: "Starboy The Weeknd Midnight City M83",
   },
 ];
 
 export default function InteractiveSignalSection() {
-  const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [hoveredTool, setHoveredTool] = useState<number | null>(null);
-
-  // Audio Context Ref for Web Audio API synthesis
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const synthNodesRef = useRef<{ osc1?: OscillatorNode; osc2?: OscillatorNode; gain?: GainNode; filter?: BiquadFilterNode } | null>(null);
-  const chordIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // 3D Tilt state for Card 1
   const [tilt1, setTilt1] = useState({ x: 0, y: 0 });
@@ -52,101 +49,11 @@ export default function InteractiveSignalSection() {
 
   const currentTrack = PLAYLIST[currentTrackIndex];
 
-  // Stop audio synthesis
-  const stopAudio = () => {
-    if (chordIntervalRef.current) clearInterval(chordIntervalRef.current);
-    if (synthNodesRef.current?.gain && audioCtxRef.current) {
-      synthNodesRef.current.gain.gain.setValueAtTime(synthNodesRef.current.gain.gain.value, audioCtxRef.current.currentTime);
-      synthNodesRef.current.gain.gain.exponentialRampToValueAtTime(0.0001, audioCtxRef.current.currentTime + 0.4);
-      setTimeout(() => {
-        try {
-          synthNodesRef.current?.osc1?.stop();
-          synthNodesRef.current?.osc2?.stop();
-        } catch {}
-        synthNodesRef.current = null;
-      }, 450);
-    }
-  };
-
-  // Start dreamy Lo-Fi chord progression with Web Audio API
-  const startAudio = () => {
-    try {
-      if (!audioCtxRef.current) {
-        audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-      }
-      if (audioCtxRef.current.state === "suspended") {
-        audioCtxRef.current.resume();
-      }
-
-      const ctx = audioCtxRef.current;
-      const chords = [
-        [261.63, 329.63, 392.0, 493.88], // Cmaj7
-        [220.0, 261.63, 329.63, 392.0],  // Am7
-        [174.61, 220.0, 261.63, 329.63], // Fmaj7
-        [196.0, 246.94, 293.66, 392.0],  // G7
-      ];
-      let chordIndex = 0;
-
-      const playChord = (notes: number[]) => {
-        if (!isPlaying && !synthNodesRef.current) return;
-        notes.forEach((freq, idx) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          const filter = ctx.createBiquadFilter();
-
-          osc.type = idx % 2 === 0 ? "sine" : "triangle";
-          osc.frequency.setValueAtTime(freq, ctx.currentTime);
-
-          filter.type = "lowpass";
-          filter.frequency.setValueAtTime(550, ctx.currentTime);
-
-          gain.gain.setValueAtTime(0.001, ctx.currentTime);
-          gain.gain.linearRampToValueAtTime(0.035, ctx.currentTime + 0.8);
-          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 2.8);
-
-          osc.connect(filter);
-          filter.connect(gain);
-          gain.connect(ctx.destination);
-
-          osc.start();
-          osc.stop(ctx.currentTime + 3.0);
-        });
-      };
-
-      // Play initial chord immediately
-      playChord(chords[0]);
-
-      chordIntervalRef.current = setInterval(() => {
-        chordIndex = (chordIndex + 1) % chords.length;
-        playChord(chords[chordIndex]);
-      }, 2900);
-    } catch (e) {
-      console.warn("Audio autoplay blocked or unsupported:", e);
-    }
-  };
-
-  const togglePlayback = () => {
-    if (isPlaying) {
-      stopAudio();
-      setIsPlaying(false);
-    } else {
-      setIsPlaying(true);
-      startAudio();
-    }
-  };
-
   const nextTrack = () => {
     setCurrentTrackIndex((prev) => (prev + 1) % PLAYLIST.length);
   };
 
-  useEffect(() => {
-    return () => {
-      stopAudio();
-      if (audioCtxRef.current) {
-        audioCtxRef.current.close().catch(() => {});
-      }
-    };
-  }, []);
+  const musicSearchUrl = `https://music.youtube.com/search?q=${encodeURIComponent(currentTrack.search)}`;
 
   // Mouse tilt helper
   const handleTilt = (e: React.MouseEvent<HTMLDivElement>, setTilt: (t: { x: number; y: number }) => void) => {
@@ -283,31 +190,9 @@ export default function InteractiveSignalSection() {
               Emerging AI tools, intelligent autonomous workflows, and practical products that solve real problems.
             </p>
 
-            {/* Interactive 3D Brand Orbs from ThreeUI */}
-            <div
-              style={{
-                marginTop: "24px",
-                display: "flex",
-                alignItems: "center",
-                gap: "14px",
-              }}
-            >
-              <span style={{ fontSize: "10px", fontFamily: "var(--mono)", color: "rgba(17, 17, 15, 0.7)" }}>
-                ACTIVE NODES:
-              </span>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "10px",
-                  padding: "4px 8px",
-                  borderRadius: "24px",
-                  background: "rgba(17, 17, 15, 0.12)",
-                }}
-              >
-                <BrandOrbsViewer variant="gemini" size="small" speed={1.2} />
-                <BrandOrbsViewer variant="claude" size="small" speed={1} />
-                <BrandOrbsViewer variant="openai" size="small" speed={1.1} />
-              </div>
+            <div className="active-nodes" aria-label="AI tools I am exploring">
+              <span>EXPLORING</span>
+              <b>Gemini</b><i /> <b>Claude</b><i /> <b>OpenAI</b>
             </div>
 
             {/* Telemetry Lines */}
@@ -319,7 +204,7 @@ export default function InteractiveSignalSection() {
           </div>
         </div>
 
-        {/* CARD 2: NOW PLAYING / AUDIO MOODBOARD (INTERACTIVE 3D VINYL & LOFI SYNTH) */}
+        {/* CARD 2: MUSIC MOODBOARD */}
         <div
           className="signal-card signal-card-music"
           onMouseMove={(e) => handleTilt(e, setTilt2)}
@@ -358,10 +243,16 @@ export default function InteractiveSignalSection() {
             </button>
           </div>
 
-          {/* Interactive 3D Vinyl Record */}
-          <div
-            onClick={togglePlayback}
+          {/* Vinyl-style link to the selected YouTube Music search */}
+          <a
+            href={musicSearchUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`Search YouTube Music for ${currentTrack.title}`}
             style={{
+              display: "block",
+              color: "inherit",
+              textDecoration: "none",
               cursor: "pointer",
               position: "relative",
               width: "148px",
@@ -376,10 +267,8 @@ export default function InteractiveSignalSection() {
                 margin: 0,
                 width: "100%",
                 height: "100%",
-                boxShadow: isPlaying
-                  ? "0 0 28px rgba(207, 110, 74, 0.45), inset 0 0 15px rgba(0, 0, 0, 0.7)"
-                  : "0 8px 18px rgba(0, 0, 0, 0.15)",
-                animation: isPlaying ? "spin 3.2s linear infinite" : "none",
+                boxShadow: "0 8px 18px rgba(0, 0, 0, 0.15)",
+                animation: "none",
                 transition: "box-shadow 0.3s ease",
               }}
             >
@@ -397,7 +286,7 @@ export default function InteractiveSignalSection() {
                 }}
               />
               <div className="record-center" style={{ fontWeight: 600 }}>
-                {isPlaying ? "❚❚" : "▶"}
+                ▶
               </div>
             </div>
 
@@ -413,7 +302,7 @@ export default function InteractiveSignalSection() {
                 borderTop: "3px solid #111",
                 borderRadius: "0 10px 0 0",
                 transformOrigin: "top right",
-                transform: isPlaying ? "rotate(24deg)" : "rotate(0deg)",
+                transform: "rotate(0deg)",
                 transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
                 pointerEvents: "none",
               }}
@@ -430,7 +319,7 @@ export default function InteractiveSignalSection() {
                 }}
               />
             </div>
-          </div>
+          </a>
 
           {/* Music Copy */}
           <div className="music-copy">
@@ -438,38 +327,29 @@ export default function InteractiveSignalSection() {
             <span style={{ fontSize: "9px" }}>{currentTrack.subtitle}</span>
           </div>
 
-          {/* Audio Play/Pause Button */}
+          {/* Open the actual track search in YouTube Music */}
           <div style={{ textAlign: "center", marginTop: "10px" }}>
-            <button
-              onClick={togglePlayback}
+            <a
+              href={musicSearchUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="music-listen-link"
               style={{
-                background: isPlaying ? "var(--ink)" : "var(--accent)",
-                color: isPlaying ? "var(--paper)" : "#fff",
-                border: "none",
-                borderRadius: "18px",
-                padding: "6px 16px",
-                fontSize: "10px",
-                fontFamily: "var(--mono)",
-                letterSpacing: "0.1em",
-                cursor: "pointer",
-                transition: "all 0.25s ease",
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                display: "inline-block",
               }}
             >
-              {isPlaying ? "PAUSE AUDIO [ LO-FI SYNTH ]" : "PLAY VIBES [ CLICK TO LISTEN ]"}
-            </button>
+              LISTEN ON YOUTUBE MUSIC ↗
+            </a>
           </div>
 
-          {/* Dynamic Audio Waveform Equalizer */}
+          {/* Decorative waveform */}
           <div className="waveform" aria-hidden="true" style={{ bottom: "18px" }}>
             {Array.from({ length: 22 }).map((_, i) => (
               <span
                 key={i}
                 style={{
-                  height: isPlaying ? `${Math.sin(i * 0.8 + Date.now()) * 8 + 12}px` : "7px",
-                  animation: isPlaying
-                    ? `audioWave 0.8s ease-in-out infinite alternate ${i * 0.05}s`
-                    : "none",
+                  height: "7px",
+                  animation: "none",
                   transition: "height 0.2s ease",
                 }}
               />
@@ -477,7 +357,7 @@ export default function InteractiveSignalSection() {
           </div>
         </div>
 
-        {/* CARD 3: TOOLS I KEEP CLOSE (MOSS CYBER TERMINAL & 3D TECH ORBS) */}
+        {/* CARD 3: TOOLS I KEEP CLOSE */}
         <div
           className="signal-card signal-card-tools"
           onMouseMove={(e) => handleTilt(e, setTilt3)}
@@ -576,8 +456,8 @@ export default function InteractiveSignalSection() {
               ))}
             </div>
 
-            {/* ThreeUI 3D Brand Orbs in Tools footer */}
             <div
+              className="tools-note"
               style={{
                 marginTop: "16px",
                 display: "flex",
@@ -587,11 +467,7 @@ export default function InteractiveSignalSection() {
                 borderTop: "1px solid rgba(235, 231, 220, 0.15)",
               }}
             >
-              <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                <BrandOrbsViewer variant="cursor" size="small" speed={1.1} />
-                <BrandOrbsViewer variant="react" size="small" speed={1.2} />
-                <BrandOrbsViewer variant="github" size="small" speed={0.9} />
-              </div>
+              <span className="tools-note-label">IN THE TOOLKIT</span>
               <div
                 style={{
                   fontSize: "11px",
