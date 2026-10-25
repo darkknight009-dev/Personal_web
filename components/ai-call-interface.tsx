@@ -56,9 +56,9 @@ export default function AICallInterface({ isOpen, onClose }: AICallInterfaceProp
   // Video Ref
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const idleWarningTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const idleDisconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const idleCountdownTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const idleWarningTimerRef = useRef<number | null>(null);
+  const idleDisconnectTimerRef = useRef<number | null>(null);
+  const idleCountdownTimerRef = useRef<number | null>(null);
   const vapiRef = useRef<Vapi | null>(null);
   const onCloseRef = useRef(onClose);
 
