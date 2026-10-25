@@ -1,7 +1,10 @@
-/* eslint-disable @next/next/no-img-element */
 import ScrollEffects from "../components/scroll-effects";
 import PortfolioAIController from "../components/portfolio-ai-controller";
 import AICallTriggerButton from "../components/ai-call-trigger-button";
+import ThreeUILoader from "../components/threeui-loader";
+import ThreeUIParticleField from "../components/threeui-particle-field";
+import InteractiveSignalSection from "../components/interactive-signal-section";
+import BrandOrbsViewer from "../components/brand-orbs-viewer";
 
 const projects = [
   {
@@ -196,6 +199,7 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
 export default function Home() {
   return (
     <>
+      <ThreeUILoader />
       <PortfolioAIController />
       <div className="noise" aria-hidden="true" />
       <div className="cursor" aria-hidden="true">
@@ -237,7 +241,8 @@ export default function Home() {
       </header>
 
       <main id="top">
-        <section className="hero section-shell" aria-labelledby="hero-title">
+        <section className="hero section-shell" aria-labelledby="hero-title" style={{ position: "relative" }}>
+          <ThreeUIParticleField opacity={0.4} />
           <div className="hero-meta eyebrow-row reveal-up">
               <p>
               <span className="status-dot" /> Open to opportunities and collaborations
@@ -386,79 +391,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="signal-section section-shell" aria-label="Current signals">
-          <div className="signal-grid reveal-up">
-            <div className="signal-card signal-card-large">
-              <span className="eyebrow">Currently tracking</span>
-              <div className="signal-title-row">
-                <h2>
-                  What’s
-                  <br />
-                  <em>next?</em>
-                </h2>
-                <span className="signal-arrow">↗</span>
-              </div>
-              <p>Emerging AI tools, intelligent workflows, and practical products that solve real problems.</p>
-              <div className="signal-lines" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </div>
-            </div>
-
-            <div className="signal-card signal-card-music">
-              <span className="eyebrow">Now playing / moodboard</span>
-              <div className="record-art">
-                <div className="record-ring ring-a" />
-                <div className="record-ring ring-b" />
-                <div className="record-center">♪</div>
-              </div>
-              <div className="music-copy">
-                <strong>Soft chaos, good lyrics</strong>
-                <span>Hindi · English · Punjabi romance and pop</span>
-              </div>
-              <div className="waveform" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-              </div>
-            </div>
-
-            <div className="signal-card signal-card-tools">
-              <span className="eyebrow">Tools I keep close</span>
-              <div className="tool-list">
-                <span>
-                  01 <b>RAG agents</b>
-                </span>
-                <span>
-                  02 <b>AI workflows</b>
-                </span>
-                <span>
-                  03 <b>APIs & backends</b>
-                </span>
-                <span>
-                  04 <b>Hackathon builds</b>
-                </span>
-              </div>
-              <div className="tool-note">Always one hackathon, trail, or new tool away from a new obsession.</div>
-            </div>
-          </div>
-        </section>
+        <InteractiveSignalSection />
 
         <section id="work" className="work section-shell section-pad" aria-labelledby="work-title">
           <div className="section-heading reveal-up">
@@ -579,6 +512,22 @@ export default function Home() {
             <a className="contact-email" href="mailto:ishaanrai18@gmail.com">
               ishaanrai18@gmail.com <span>↗</span>
             </a>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", margin: "24px 0 16px" }}>
+              <span style={{ fontSize: "11px", fontFamily: "var(--mono)", color: "rgba(235, 231, 220, 0.55)", letterSpacing: "0.1em" }}>
+                NETWORK NODES:
+              </span>
+              <div style={{ display: "flex", gap: "10px" }}>
+                <a href="https://github.com/Ishaan-Rai09" target="_blank" rel="noreferrer" title="GitHub 3D Node">
+                  <BrandOrbsViewer variant="github" size="small" speed={1.2} />
+                </a>
+                <a href="https://www.linkedin.com/in/ishaan-rai/" target="_blank" rel="noreferrer" title="LinkedIn 3D Node">
+                  <BrandOrbsViewer variant="linkedin" size="small" speed={1} />
+                </a>
+                <a href="mailto:ishaanrai18@gmail.com" title="Email 3D Node">
+                  <BrandOrbsViewer variant="email" size="small" speed={1.1} />
+                </a>
+              </div>
+            </div>
             <div className="contact-links">
               <ArrowLink label="GitHub" href="https://github.com/Ishaan-Rai09" />
               <ArrowLink label="LinkedIn" href="https://www.linkedin.com/in/ishaan-rai/" />
