@@ -984,6 +984,7 @@ img {
   font-size: 9px;
   letter-spacing: 0.09em;
   text-decoration: none;
+  cursor: pointer;
   transition: background 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
@@ -992,6 +993,104 @@ img {
   background: var(--ink);
   border-color: var(--ink);
   color: var(--paper);
+}
+
+.music-player-frame {
+  width: 100%;
+  height: 200px;
+  min-height: 200px;
+  margin-top: 14px;
+  overflow: hidden;
+  background: #111;
+}
+
+.music-player-frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 200px;
+  min-height: 200px;
+  border: 0;
+}
+
+.record-art.is-playing {
+  animation: spin 3s linear infinite;
+}
+
+.waveform.is-playing span {
+  box-shadow: 0 0 8px rgba(207, 110, 74, 0.4);
+}
+
+.call-idle-warning {
+  position: fixed;
+  z-index: 300;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(7, 8, 7, 0.78);
+  backdrop-filter: blur(8px);
+}
+
+.call-idle-warning-card {
+  width: min(430px, 100%);
+  padding: 30px;
+  border: 1px solid rgba(207, 110, 74, 0.5);
+  background: #171715;
+  color: var(--paper);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+}
+
+.call-idle-warning-kicker {
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+
+.call-idle-warning-card h2 {
+  margin: 14px 0 8px;
+  font-family: var(--serif);
+  font-size: 40px;
+  font-weight: 400;
+}
+
+.call-idle-warning-card p {
+  margin: 0;
+  color: var(--paper-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.call-idle-warning-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.call-idle-warning-actions button {
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid var(--line-dark);
+  background: transparent;
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.call-idle-warning-actions button:first-child {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--ink);
+}
+
+.call-idle-warning-actions button:hover { transform: translateY(-1px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .record-art.is-playing { animation-duration: 12s; }
 }
 
 .waveform {

@@ -130,7 +130,7 @@ const timeline = [
   },
 ] as const;
 
-const resumeHref = "https://drive.google.com/file/d/13skx2-VL11mANXA0kPz5IQru5JgZUzA4/view";
+const resumeHref = "https://drive.google.com/file/d/1Bjc_CQtxqc6hbm5Z7r1jURGch6ni8vkx/view?usp=sharing";
 
 function ArrowLink({ label, href }: { label: string; href: string }) {
   const external = href.startsWith("http");
@@ -262,7 +262,7 @@ export default function Home() {
                 </a>
                 <AICallTriggerButton variant="hero" />
                 <a className="text-link" href={resumeHref} target="_blank" rel="noreferrer">
-                  Download résumé <span>↗</span>
+                  View résumé <span>↗</span>
                 </a>
               </div>
             </div>
@@ -503,7 +503,7 @@ export default function Home() {
               <ArrowLink label="LinkedIn" href="https://www.linkedin.com/in/ishaan-rai/" />
               <ArrowLink label="YouTube" href="https://www.youtube.com/watch?v=m9hT4-A8NWg" />
               <ArrowLink label="Email" href="mailto:ishaanrai18@gmail.com" />
-              <ArrowLink label="Résumé" href={resumeHref} />
+              <ArrowLink label="View résumé" href={resumeHref} />
             </div>
           </div>
         </section>

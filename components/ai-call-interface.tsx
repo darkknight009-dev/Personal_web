@@ -9,6 +9,33 @@ interface AICallInterfaceProps {
   onClose: () => void;
 }
 
+const IDLE_WARNING_DELAY_MS = 45_000;
+const IDLE_DISCONNECT_DELAY_MS = 10_000;
+
+function InactivityWarning({
+  seconds,
+  onContinue,
+  onEnd,
+}: {
+  seconds: number;
+  onContinue: () => void;
+  onEnd: () => void;
+}) {
+  return (
+    <div className="call-idle-warning" role="alertdialog" aria-modal="true" aria-labelledby="idle-warning-title">
+      <div className="call-idle-warning-card">
+        <span className="call-idle-warning-kicker">QUIET SESSION</span>
+        <h2 id="idle-warning-title">Still there?</h2>
+        <p>This call uses paid AI minutes. It will disconnect in {seconds} seconds if there is no activity.</p>
+        <div className="call-idle-warning-actions">
+          <button type="button" onClick={onContinue}>I’m still here</button>
+          <button type="button" onClick={onEnd}>End call now</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function AICallInterface({ isOpen, onClose }: AICallInterfaceProps) {
   // Call State
   const [vapiInstance, setVapiInstance] = useState<Vapi | null>(null);
@@ -23,10 +50,60 @@ export default function AICallInterface({ isOpen, onClose }: AICallInterfaceProp
   const [currentCaption, setCurrentCaption] = useState<string>("Initializing Mecha-Unit IR01 neural pipeline...");
   const [transcriptRole, setTranscriptRole] = useState<"assistant" | "user" | "system">("system");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showInactivityWarning, setShowInactivityWarning] = useState(false);
+  const [inactivitySeconds, setInactivitySeconds] = useState(IDLE_DISCONNECT_DELAY_MS / 1000);
 
   // Video Ref
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const idleWarningTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const idleDisconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const idleCountdownTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const vapiRef = useRef<Vapi | null>(null);
+  const onCloseRef = useRef(onClose);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  const clearInactivityTimers = useCallback(() => {
+    if (idleWarningTimerRef.current) clearTimeout(idleWarningTimerRef.current);
+    if (idleDisconnectTimerRef.current) clearTimeout(idleDisconnectTimerRef.current);
+    if (idleCountdownTimerRef.current) clearInterval(idleCountdownTimerRef.current);
+    idleWarningTimerRef.current = null;
+    idleDisconnectTimerRef.current = null;
+    idleCountdownTimerRef.current = null;
+    setShowInactivityWarning(false);
+    setInactivitySeconds(IDLE_DISCONNECT_DELAY_MS / 1000);
+  }, []);
+
+  const scheduleInactivityWarning = useCallback(() => {
+    clearInactivityTimers();
+    idleWarningTimerRef.current = window.setTimeout(() => {
+      setShowInactivityWarning(true);
+      setInactivitySeconds(IDLE_DISCONNECT_DELAY_MS / 1000);
+      idleCountdownTimerRef.current = window.setInterval(() => {
+        setInactivitySeconds((seconds) => Math.max(0, seconds - 1));
+      }, 1000);
+      idleDisconnectTimerRef.current = window.setTimeout(() => {
+        clearInactivityTimers();
+        setCallStatus("ended");
+        setRobotState("disconnected");
+        setCurrentCaption("Call ended after a period of inactivity.");
+        if (timerRef.current) clearInterval(timerRef.current);
+        timerRef.current = null;
+        const activeVapi = vapiRef.current;
+        vapiRef.current = null;
+        activeVapi?.stop();
+        const activeCamera = videoRef.current?.srcObject as MediaStream | null;
+        activeCamera?.getTracks().forEach((track) => track.stop());
+        setCameraStream(null);
+        setIsCameraOn(false);
+        setIsMinimized(false);
+        onCloseRef.current();
+      }, IDLE_DISCONNECT_DELAY_MS);
+    }, IDLE_WARNING_DELAY_MS);
+  }, [clearInactivityTimers]);
 
   // Suggested talking points
   const topicChips = [
@@ -58,6 +135,7 @@ export default function AICallInterface({ isOpen, onClose }: AICallInterfaceProp
       }
 
       const vapi = new Vapi(sessionData.publicKey);
+      vapiRef.current = vapi;
       setVapiInstance(vapi);
 
       vapi.on("call-start", () => {
@@ -70,6 +148,7 @@ export default function AICallInterface({ isOpen, onClose }: AICallInterfaceProp
         timerRef.current = setInterval(() => {
           setCallDuration((prev) => prev + 1);
         }, 1000);
+        scheduleInactivityWarning();
       });
 
       vapi.on("call-end", () => {
@@ -77,16 +156,21 @@ export default function AICallInterface({ isOpen, onClose }: AICallInterfaceProp
         setRobotState("disconnected");
         setCurrentCaption("Call session concluded. Unit IR-01 in standby.");
         setTranscriptRole("system");
+        clearInactivityTimers();
+        vapiRef.current = null;
         if (timerRef.current) clearInterval(timerRef.current);
+        timerRef.current = null;
       });
 
       vapi.on("speech-start", () => {
+        clearInactivityTimers();
         setRobotState("speaking");
         setTranscriptRole("assistant");
       });
 
       vapi.on("speech-end", () => {
         setRobotState("idle");
+        scheduleInactivityWarning();
       });
 
       vapi.on("volume-level", (volume: number) => {
@@ -99,6 +183,7 @@ export default function AICallInterface({ isOpen, onClose }: AICallInterfaceProp
           setCurrentCaption(msg.transcript);
           setTranscriptRole(msg.role === "assistant" ? "assistant" : "user");
           if (msg.role === "user") {
+            scheduleInactivityWarning();
             setRobotState("listening");
           }
         }
@@ -124,9 +209,10 @@ export default function AICallInterface({ isOpen, onClose }: AICallInterfaceProp
       setErrorMessage(err.message || "Could not start session.");
       setCurrentCaption("Session ended. Click Reconnect to try again.");
     }
-  }, []);
+  }, [clearInactivityTimers, scheduleInactivityWarning]);
 
   const endCall = useCallback(() => {
+    clearInactivityTimers();
     if (vapiInstance) {
       try {
         vapiInstance.stop();
@@ -134,6 +220,7 @@ export default function AICallInterface({ isOpen, onClose }: AICallInterfaceProp
         console.warn("Stop error", e);
       }
     }
+    vapiRef.current = null;
     if (timerRef.current) clearInterval(timerRef.current);
     if (cameraStream) {
       cameraStream.getTracks().forEach((track) => track.stop());
@@ -143,7 +230,7 @@ export default function AICallInterface({ isOpen, onClose }: AICallInterfaceProp
     setCallStatus("idle");
     setRobotState("idle");
     onClose();
-  }, [vapiInstance, cameraStream, onClose]);
+  }, [vapiInstance, cameraStream, onClose, clearInactivityTimers]);
 
   const toggleMute = () => {
     if (!vapiInstance) return;
@@ -196,6 +283,7 @@ export default function AICallInterface({ isOpen, onClose }: AICallInterfaceProp
       setCurrentCaption(promptText);
       setTranscriptRole("user");
       setRobotState("thinking");
+      scheduleInactivityWarning();
     } catch (e) {
       console.error("Failed to send message prompt", e);
     }
@@ -212,6 +300,9 @@ export default function AICallInterface({ isOpen, onClose }: AICallInterfaceProp
   useEffect(() => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
+      if (idleWarningTimerRef.current) clearTimeout(idleWarningTimerRef.current);
+      if (idleDisconnectTimerRef.current) clearTimeout(idleDisconnectTimerRef.current);
+      if (idleCountdownTimerRef.current) clearInterval(idleCountdownTimerRef.current);
       if (cameraStream) {
         cameraStream.getTracks().forEach((track) => track.stop());
       }
@@ -222,6 +313,10 @@ export default function AICallInterface({ isOpen, onClose }: AICallInterfaceProp
     const mins = Math.floor(totalSeconds / 60);
     const secs = totalSeconds % 60;
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+  };
+
+  const continueCall = () => {
+    scheduleInactivityWarning();
   };
 
   if (!isOpen) return null;
@@ -268,6 +363,13 @@ export default function AICallInterface({ isOpen, onClose }: AICallInterfaceProp
             ✕
           </button>
         </div>
+        {showInactivityWarning && (
+          <InactivityWarning
+            seconds={inactivitySeconds}
+            onContinue={continueCall}
+            onEnd={endCall}
+          />
+        )}
       </aside>
     );
   }
@@ -277,6 +379,13 @@ export default function AICallInterface({ isOpen, onClose }: AICallInterfaceProp
     <div className="call-hud-screen" role="dialog" aria-modal="true">
       {/* BACKGROUND INDUSTRIAL GRID */}
       <div className="call-hud-grid-bg" aria-hidden="true" />
+      {showInactivityWarning && (
+        <InactivityWarning
+          seconds={inactivitySeconds}
+          onContinue={continueCall}
+          onEnd={endCall}
+        />
+      )}
 
       {/* TOP TACTICAL BAR */}
       <header className="call-hud-topbar">

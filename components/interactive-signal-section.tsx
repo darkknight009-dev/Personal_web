@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 
@@ -15,7 +15,7 @@ const PLAYLIST: Track[] = [
   {
     id: "01",
     title: "Soft chaos, good lyrics",
-    subtitle: "Hindi · English · Punjabi romance and pop",
+    subtitle: "Hindi Â· English Â· Punjabi romance and pop",
     genre: "LOFI / ROMANCE",
     bpm: 88,
     search: "Hindi English Punjabi romantic pop songs",
@@ -23,7 +23,7 @@ const PLAYLIST: Track[] = [
   {
     id: "02",
     title: "Kinni Kinni (Late Night Tape)",
-    subtitle: "Diljit Dosanjh · Chill Acoustic Beats",
+    subtitle: "Diljit Dosanjh Â· Chill Acoustic Beats",
     genre: "PUNJABI CHILL",
     bpm: 96,
     search: "Kinni Kinni Diljit Dosanjh",
@@ -31,7 +31,7 @@ const PLAYLIST: Track[] = [
   {
     id: "03",
     title: "Starboy & Midnight City",
-    subtitle: "The Weeknd · M83 · Synthwave Flow",
+    subtitle: "The Weeknd Â· M83 Â· Synthwave Flow",
     genre: "SYNTH POP",
     bpm: 118,
     search: "Starboy The Weeknd Midnight City M83",
@@ -39,6 +39,7 @@ const PLAYLIST: Track[] = [
 ];
 
 export default function InteractiveSignalSection() {
+  const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [hoveredTool, setHoveredTool] = useState<number | null>(null);
 
@@ -68,10 +69,10 @@ export default function InteractiveSignalSection() {
   };
 
   const tools = [
-    { num: "01", name: "RAG agents", tag: "FAISS · Hybrid Search · Re-Ranking", status: "PRODUCTION" },
-    { num: "02", name: "AI workflows", tag: "LangChain · Multi-Agent · Vapi", status: "AUTONOMOUS" },
-    { num: "03", name: "APIs & backends", tag: "Next.js · Node · Docker · FastAPI", status: "HIGH SPEED" },
-    { num: "04", name: "Hackathon builds", tag: "15+ Builds · Microsoft Top Finishes", status: "SHIP VELOCITY" },
+    { num: "01", name: "RAG agents", tag: "FAISS Â· Hybrid Search Â· Re-Ranking", status: "PRODUCTION" },
+    { num: "02", name: "AI workflows", tag: "LangChain Â· Multi-Agent Â· Vapi", status: "AUTONOMOUS" },
+    { num: "03", name: "APIs & backends", tag: "Next.js Â· Node Â· Docker Â· FastAPI", status: "HIGH SPEED" },
+    { num: "04", name: "Hackathon builds", tag: "15+ Builds Â· Microsoft Top Finishes", status: "SHIP VELOCITY" },
   ];
 
   return (
@@ -170,7 +171,7 @@ export default function InteractiveSignalSection() {
 
             <div className="signal-title-row">
               <h2 style={{ letterSpacing: "-0.02em" }}>
-                What’s
+                Whatâ€™s
                 <br />
                 <em>next?</em>
               </h2>
@@ -182,7 +183,7 @@ export default function InteractiveSignalSection() {
                   transition: "all 0.3s ease",
                 }}
               >
-                ↗
+                â†—
               </div>
             </div>
 
@@ -239,7 +240,7 @@ export default function InteractiveSignalSection() {
                 gap: "4px",
               }}
             >
-              SKIP ⏭
+              SKIP â­
             </button>
           </div>
 
@@ -262,13 +263,12 @@ export default function InteractiveSignalSection() {
           >
             {/* Spinning Disc */}
             <div
-              className="record-art"
+              className={`record-art${isPlaying ? " is-playing" : ""}`}
               style={{
                 margin: 0,
                 width: "100%",
                 height: "100%",
                 boxShadow: "0 8px 18px rgba(0, 0, 0, 0.15)",
-                animation: "none",
                 transition: "box-shadow 0.3s ease",
               }}
             >
@@ -286,7 +286,7 @@ export default function InteractiveSignalSection() {
                 }}
               />
               <div className="record-center" style={{ fontWeight: 600 }}>
-                ▶
+                â–¶
               </div>
             </div>
 
@@ -323,33 +323,43 @@ export default function InteractiveSignalSection() {
 
           {/* Music Copy */}
           <div className="music-copy">
-            <strong style={{ fontSize: "20px" }}>{currentTrack.title}</strong>
-            <span style={{ fontSize: "9px" }}>{currentTrack.subtitle}</span>
+            <strong style={{ fontSize: "20px" }}>{isPlaying ? "Work Of Art" : currentTrack.title}</strong>
+            <span style={{ fontSize: "9px" }}>{isPlaying ? "NOW PLAYING · YOUTUBE" : currentTrack.subtitle}</span>
           </div>
 
-          {/* Open the actual track search in YouTube Music */}
+          {/* Play the selected track in the embedded YouTube player */}
           <div style={{ textAlign: "center", marginTop: "10px" }}>
-            <a
-              href={musicSearchUrl}
-              target="_blank"
-              rel="noreferrer"
+            <button
+              type="button"
+              onClick={() => setIsPlaying((playing) => !playing)}
               className="music-listen-link"
-              style={{
-                display: "inline-block",
-              }}
             >
-              LISTEN ON YOUTUBE MUSIC ↗
-            </a>
+              {isPlaying ? "STOP PLAYBACK" : "PLAY WORK OF ART"}
+            </button>
           </div>
+
+          {isPlaying && (
+            <div className="music-player-frame">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/mHumBHbmLfM?autoplay=1&rel=0&list=RDmHumBHbmLfM"
+                title="Work Of Art"
+                allow="autoplay; encrypted-media; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            </div>
+          )}
 
           {/* Decorative waveform */}
-          <div className="waveform" aria-hidden="true" style={{ bottom: "18px" }}>
+          <div className={`waveform${isPlaying ? " is-playing" : ""}`} aria-hidden="true" style={{ bottom: "18px" }}>
             {Array.from({ length: 22 }).map((_, i) => (
               <span
                 key={i}
                 style={{
-                  height: "7px",
-                  animation: "none",
+                  height: isPlaying ? `${8 + (i % 5) * 2}px` : "7px",
+                  animation: isPlaying
+                    ? `audioWave 0.75s ease-in-out infinite alternate ${i * 0.04}s`
+                    : "none",
                   transition: "height 0.2s ease",
                 }}
               />
@@ -449,7 +459,7 @@ export default function InteractiveSignalSection() {
                         animation: "fadeIn 0.2s ease",
                       }}
                     >
-                      → {tool.tag}
+                      â†’ {tool.tag}
                     </div>
                   )}
                 </div>
