@@ -3204,3 +3204,474 @@ img {
   .loader-progress span { transition: none; }
 }
 
+/* Small-screen layout refinements for the portfolio and full-screen overlays. */
+@media (max-width: 820px) {
+  .site-header {
+    height: auto;
+    min-height: 74px;
+    flex-wrap: wrap;
+    align-content: center;
+    row-gap: 10px;
+    padding: 10px 0;
+    background: linear-gradient(180deg, rgba(17, 17, 15, 0.96), rgba(17, 17, 15, 0.82));
+  }
+
+  .site-header .primary-nav {
+    display: flex;
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0;
+    padding-top: 8px;
+    border-top: 1px solid var(--line-dark);
+  }
+
+  .primary-nav a {
+    font-size: 9px;
+  }
+
+  .signal-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .signal-card-large {
+    grid-column: 1 / -1;
+  }
+
+  .signal-card,
+  .signal-card:nth-child(2) {
+    border-right: 1px solid var(--line-dark);
+  }
+
+  .signal-card:last-child {
+    border-right: 0;
+  }
+
+  .entry-modal-backdrop {
+    padding: 64px 22px 22px;
+  }
+
+  .entry-cards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 16px;
+  }
+
+  .entry-card {
+    min-height: 300px;
+  }
+
+  .call-hud-screen {
+    height: 100dvh;
+    min-height: 100dvh;
+    padding: 14px;
+    overflow-y: auto;
+  }
+
+  .call-hud-topbar {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .call-hud-status-group {
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
+
+  .call-hud-controls-group {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .call-hud-controls-group .call-hud-action-btn {
+    min-height: 38px;
+  }
+
+  .call-hud-main-stage {
+    flex: 0 0 auto;
+    min-height: 44dvh;
+    margin: 12px 0;
+  }
+
+  .call-hud-bottombar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .call-hud-controls-left,
+  .call-hud-bottombar > div:last-child {
+    width: 100%;
+  }
+
+  .call-hud-controls-left > button,
+  .call-hud-bottombar > div:last-child > button {
+    flex: 1;
+    justify-content: center;
+    min-height: 42px;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-header {
+    width: var(--shell);
+    min-height: 76px;
+    row-gap: 8px;
+  }
+
+  .site-header > div:last-child {
+    gap: 6px !important;
+  }
+
+  .header-ai-pill {
+    padding: 7px 8px;
+    font-size: 8px;
+    letter-spacing: 0.03em;
+  }
+
+  .header-cta {
+    gap: 5px;
+    padding-left: 7px;
+    font-size: 8px;
+  }
+
+  .site-header .primary-nav {
+    gap: 8px;
+    padding-top: 7px;
+  }
+
+  .primary-nav a {
+    font-size: 8px;
+    letter-spacing: 0.04em;
+  }
+
+  .hero-title {
+    font-size: clamp(52px, 15.4vw, 76px);
+    overflow-wrap: anywhere;
+  }
+
+  .hero-stage {
+    min-height: clamp(340px, 105vw, 410px);
+  }
+
+  .hero-card-main {
+    height: min(96vw, 382px);
+  }
+
+  .hero-card-caption {
+    gap: 8px;
+    font-size: 7px;
+  }
+
+  .signal-card,
+  .signal-card:nth-child(2) {
+    min-height: 310px;
+    padding: 24px 19px;
+  }
+
+  .signal-card-large {
+    min-height: 330px;
+  }
+
+  .signal-title-row {
+    margin-top: 56px;
+  }
+
+  .signal-title-row h2 {
+    font-size: clamp(54px, 15vw, 72px);
+  }
+
+  .signal-arrow {
+    width: 39px;
+    height: 39px;
+    flex: 0 0 39px;
+  }
+
+  .active-nodes {
+    flex-wrap: wrap;
+    gap: 7px;
+    font-size: 9px;
+  }
+
+  .signal-card-music .music-copy strong {
+    font-size: 20px;
+  }
+
+  .music-copy span {
+    font-size: 7px;
+    line-height: 1.5;
+  }
+
+  .music-listen-link {
+    padding: 8px 10px;
+    font-size: 8px;
+    letter-spacing: 0.04em;
+  }
+
+  .tool-list {
+    gap: 11px;
+    margin-top: 42px;
+    font-size: 11px;
+  }
+
+  .tool-list span {
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .tool-list b {
+    text-align: right;
+    font-size: 8px;
+  }
+
+  .tool-note {
+    right: 19px;
+    bottom: 22px;
+    left: 19px;
+    font-size: 17px;
+  }
+
+  .project-topline {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .project-topline h3 {
+    font-size: clamp(34px, 11vw, 43px);
+  }
+
+  .project-thesis {
+    font-size: clamp(18px, 6vw, 22px);
+  }
+
+  .project-links {
+    flex-wrap: wrap;
+    gap: 12px 18px;
+  }
+
+  .contact-email {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    font-size: clamp(17px, 5.8vw, 21px);
+  }
+
+  .contact-links {
+    gap: 12px 16px;
+  }
+
+  .entry-modal-backdrop {
+    justify-content: flex-start;
+    gap: 22px;
+    padding: 66px 16px 22px;
+  }
+
+  .entry-header-wrap {
+    padding-top: 0;
+  }
+
+  .entry-system-badge {
+    max-width: 100%;
+    font-size: 8px;
+    letter-spacing: 0.07em;
+  }
+
+  .entry-cards-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    margin: 0 auto;
+  }
+
+  .entry-card {
+    min-height: 0;
+    padding: 20px;
+  }
+
+  .entry-tags-row {
+    margin-bottom: 18px;
+  }
+
+  .entry-card-desc {
+    margin-bottom: 14px;
+  }
+
+  .entry-modal-footer {
+    margin-top: 0;
+    font-size: 9px;
+  }
+
+  .entry-corner-mark {
+    display: none;
+  }
+
+  .call-hud-screen {
+    padding: 10px;
+  }
+
+  .call-hud-status-indicator {
+    font-size: 9px;
+  }
+
+  .call-hud-status-group > span {
+    font-size: 8px !important;
+    padding-left: 8px !important;
+  }
+
+  .call-hud-controls-group {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+  }
+
+  .call-hud-controls-group .call-hud-action-btn {
+    padding: 6px 8px;
+    font-size: 8px;
+  }
+
+  .call-hud-controls-group .call-hud-action-btn:nth-of-type(1) {
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+
+  .call-hud-timer-badge {
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+
+  .call-hud-main-stage {
+    min-height: 40dvh;
+  }
+
+  .call-hud-corner-tag {
+    font-size: 7px;
+  }
+
+  .call-hud-webcam-box {
+    top: 30px;
+    right: 8px;
+    width: clamp(92px, 28vw, 130px);
+  }
+
+  .call-hud-captions-dock {
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+    padding: 10px;
+  }
+
+  .call-hud-chips-bar {
+    margin-bottom: 10px;
+  }
+
+  .call-hud-chips-label,
+  .call-hud-topic-chip {
+    font-size: 9px;
+  }
+
+  .call-hud-controls-left {
+    gap: 6px;
+  }
+
+  .call-hud-controls-left .call-hud-action-btn,
+  .call-hud-bottombar > div:last-child .call-hud-action-btn {
+    padding: 8px 6px !important;
+    font-size: 8px;
+  }
+
+  .copilot-floating-badge {
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    min-width: 0;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .copilot-thumb {
+    width: 36px;
+    height: 36px;
+  }
+
+  .copilot-btn-group {
+    gap: 4px;
+  }
+
+  .copilot-btn-group .call-hud-action-btn {
+    padding: 5px 6px !important;
+    font-size: 8px !important;
+  }
+
+  .persistent-ai-trigger {
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .persistent-ai-btn {
+    gap: 7px;
+    padding: 10px 12px;
+    font-size: 9px;
+  }
+
+  .call-idle-warning-card {
+    padding: 24px 20px;
+  }
+
+  .call-idle-warning-card h2 {
+    font-size: 34px;
+  }
+
+  .call-idle-warning-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 360px) {
+  .brand {
+    gap: 6px;
+  }
+
+  .header-ai-pill {
+    gap: 5px;
+    padding: 6px;
+    font-size: 7px;
+  }
+
+  .header-cta {
+    padding-left: 4px;
+    font-size: 7px;
+  }
+
+  .primary-nav a {
+    font-size: 7px;
+  }
+
+  .signal-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .signal-card,
+  .signal-card:nth-child(2),
+  .signal-card:last-child {
+    min-height: 300px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line-dark);
+  }
+
+  .signal-card:last-child {
+    border-bottom: 0;
+  }
+
+  .signal-card-large {
+    min-height: 320px;
+  }
+
+  .tool-note {
+    max-width: 140px;
+  }
+
+  .about-facts {
+    grid-template-columns: 1fr;
+  }
+}
+
