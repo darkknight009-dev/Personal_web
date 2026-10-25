@@ -1,10 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import ScrollEffects from "../components/scroll-effects";
-<<<<<<< HEAD
-=======
 import PortfolioAIController from "../components/portfolio-ai-controller";
 import AICallTriggerButton from "../components/ai-call-trigger-button";
->>>>>>> origin/master
 
 const projects = [
   {
@@ -199,10 +196,7 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
 export default function Home() {
   return (
     <>
-<<<<<<< HEAD
-=======
       <PortfolioAIController />
->>>>>>> origin/master
       <div className="noise" aria-hidden="true" />
       <div className="cursor" aria-hidden="true">
         <span />
@@ -233,12 +227,6 @@ export default function Home() {
           </a>
         </nav>
 
-<<<<<<< HEAD
-        <a className="header-cta" href="#contact" data-magnetic>
-          <span>Let’s talk</span>
-          <span className="arrow">↗</span>
-        </a>
-=======
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <AICallTriggerButton variant="header" />
           <a className="header-cta" href="#contact" data-magnetic>
@@ -246,7 +234,6 @@ export default function Home() {
             <span className="arrow">↗</span>
           </a>
         </div>
->>>>>>> origin/master
       </header>
 
       <main id="top">
@@ -277,10 +264,7 @@ export default function Home() {
                   <span>See selected work</span>
                   <span className="button-icon">↓</span>
                 </a>
-<<<<<<< HEAD
-=======
                 <AICallTriggerButton variant="hero" />
->>>>>>> origin/master
                 <a className="text-link" href={resumeHref} target="_blank" rel="noreferrer">
                   Download résumé <span>↗</span>
                 </a>
