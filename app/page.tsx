@@ -11,9 +11,8 @@ const projects = [
     title: "Luxe Health AI",
     year: "Jun 2025 — Jul 2025",
     thesis: "Enterprise medical image analysis with secure DICOM and Orthanc PACS workflows.",
-    image:
-      "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=85",
-    alt: "Retro computer and game controller on a dark desk",
+    image: "/projects/luxe-health-ai.webp",
+    alt: "Radiology workstation showing MRI scans with AI-assisted highlighting",
     problem:
       "Healthcare systems struggle with complex medical image analysis and fragmented PACS workflows, leading to inefficiencies and delayed diagnoses.",
     solution:
@@ -31,9 +30,8 @@ const projects = [
     title: "NeuroSync AI",
     year: "Jan 2025",
     thesis: "An AI mental-health companion designed around emotional support and Web3 privacy.",
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=85",
-    alt: "Abstract data dashboard with charts",
+    image: "/projects/neurosync-ai.webp",
+    alt: "A private wellness companion app on a phone beside a journal",
     problem:
       "Mental-health support tools often compromise user privacy, creating barriers to seeking help.",
     solution:
@@ -51,9 +49,8 @@ const projects = [
     title: "Derma AI",
     year: "Nov 2025",
     thesis: "An AI-powered dermatology platform connecting early skin insights with structured consultations.",
-    image:
-      "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1200&q=85",
-    alt: "Architectural lines and a warm sunlit wall",
+    image: "/projects/derma-ai.webp",
+    alt: "Dermatology analysis app alongside a clinical skin examination",
     problem:
       "Limited access to early dermatology insights and inefficient doctor-consultation processes make it harder to act early.",
     solution:
@@ -71,9 +68,8 @@ const projects = [
     title: "Hackathon Hub",
     year: "Jan 2026",
     thesis: "A centralized discovery platform for students, developers, and builders looking for their next hackathon.",
-    image:
-      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=85",
-    alt: "A group collaborating around a table",
+    image: "/projects/hackathon-hub.webp",
+    alt: "Hackathon discovery platform displayed on a laptop in a campus workspace",
     problem:
       "Hackathons are scattered across platforms, making discovery difficult for students and developers.",
     solution:
@@ -88,9 +84,8 @@ const projects = [
     title: "FitTracker",
     year: "Oct 2025",
     thesis: "AI-powered fitness and nutrition tracking for more personal, data-informed habit building.",
-    image:
-      "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1200&q=85",
-    alt: "A person preparing for a workout",
+    image: "/projects/fittracker.webp",
+    alt: "Fitness and nutrition tracking app beside workout gear and a balanced meal",
     problem:
       "Fragmented fitness tools lack personalization and data-driven insights for long-term habit building.",
     solution:
@@ -105,9 +100,8 @@ const projects = [
     title: "Elite Events",
     year: "Sep 2025",
     thesis: "A premium college-event platform for discovery, ticketing, referrals, and loyalty rewards.",
-    image:
-      "https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=1200&q=85",
-    alt: "A live event with lights and a crowd",
+    image: "/projects/elite-events.webp",
+    alt: "Digital event ticket on a phone in a warmly lit college auditorium",
     problem:
       "College events lack modern digital infrastructure for discovery, booking, and management.",
     solution:
@@ -287,7 +281,7 @@ export default function Home() {
               </div>
               <div className="hero-card hero-card-small parallax-card">
                 <img
-                  src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=900&q=85"
+                  src="/second.jpg"
                   alt="A foggy forest landscape"
                 />
                 <span className="small-card-label">
@@ -428,21 +422,21 @@ export default function Home() {
                 I share what I’m learning about emerging AI tools, practical development, hackathons,
                 and the experiments that happen between “this could be interesting” and “it actually works.”
               </p>
-              <a className="button button-outline" href="https://www.youtube.com/watch?v=m9hT4-A8NWg" target="_blank" rel="noreferrer" data-magnetic>
+              <a className="button button-outline" href="https://www.youtube.com/@ishaanrai009" target="_blank" rel="noreferrer" data-magnetic>
                 <span>Visit the channel</span>
                 <span className="button-icon">↗</span>
               </a>
             </div>
             <a
               className="video-feature reveal-up"
-              href="https://www.youtube.com/watch?v=m9hT4-A8NWg"
+              href="https://www.youtube.com/@ishaanrai009"
               target="_blank"
               rel="noreferrer"
               aria-label="Watch the latest field note"
             >
               <img
-                src="https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?auto=format&fit=crop&w=1400&q=85"
-                alt="A vintage camera resting on a desk"
+                src="/creator-ai-build.webp"
+                alt="AI workflow and code on a laptop in a warm creative workspace"
               />
               <span className="video-overlay" />
               <span className="video-play">▶</span>
